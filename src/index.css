@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-accent: 'Instrument Serif', 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  html {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #0A0A0A;
+    color: #F2F2F2;
+    font-family: var(--font-body);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .font-accent {
+    font-family: var(--font-accent);
+    font-style: italic;
+    letter-spacing: 0em;
+  }
+
+  .font-mono, pre, code, .tag-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+}
+
+/* Line-by-line slide up from behind a mask */
+.line-mask-wrapper {
+  overflow: hidden;
+  display: block;
+}
+
+.line-slide-up {
+  display: inline-block;
+  animation: lineSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes lineSlideUp {
+  0% {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+/* Smooth fade-in for paragraphs with subtle upward glide */
+.paragraph-fade-in {
+  animation: fadeInStagger 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes fadeInStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Minimalist studio borders & dark fills */
+.studio-border {
+  border: 1px solid #222222;
+}
+
+.studio-card {
+  background-color: #111111;
+  border: 1px solid #222222;
+  border-radius: 4px;
+}
+
+/* Minimal clean scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #222222;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333333;
+}
