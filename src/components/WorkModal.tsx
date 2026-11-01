@@ -3,6 +3,7 @@ import { X, Upload, RotateCcw, Link as LinkIcon } from 'lucide-react';
 import { WorkItem } from '../types/portfolio.ts';
 import WorkVisualRenderer from './WorkVisualRenderer.tsx';
 import { saveMedia, clearSavedMedia } from '../utils/portfolioUtils.ts';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface Props {
   item: WorkItem | null;
@@ -22,6 +23,7 @@ export default function WorkModal({
   const [urlInput, setUrlInput] = useState('');
   const [isUrlMode, setIsUrlMode] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,6 +34,15 @@ export default function WorkModal({
   }, [onClose]);
 
   if (!item) return null;
+
+  const mediaSrc = customMediaUrl || item.defaultImage;
+  const isVideo =
+    item.tag === '[AI VIDEO]' ||
+    item.category === 'AI VIDEO' ||
+    item.tag === '[এআই ভিডিও]' ||
+    mediaSrc.endsWith('.mp4') ||
+    mediaSrc.endsWith('.webm') ||
+    mediaSrc.startsWith('data:video');
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,13 +55,9 @@ export default function WorkModal({
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      const success = saveMedia(item.id, result);
-      if (success) {
-        onMediaUpdated(item.id, result);
-        onShowToast(`Updated artwork for "${item.title}".`);
-      } else {
-        onShowToast('Storage full. Please paste an image URL instead.');
-      }
+      saveMedia(item.id, result);
+      onMediaUpdated(item.id, result);
+      onShowToast(`${t.toast.updatedArtwork} "${item.title}".`);
     };
     reader.readAsDataURL(file);
   };
@@ -62,13 +69,13 @@ export default function WorkModal({
     onMediaUpdated(item.id, urlInput.trim());
     setUrlInput('');
     setIsUrlMode(false);
-    onShowToast(`Applied custom URL for "${item.title}".`);
+    onShowToast(`${t.toast.appliedUrl} "${item.title}".`);
   };
 
   const handleResetMedia = () => {
     clearSavedMedia(item.id);
     onMediaUpdated(item.id, null);
-    onShowToast(`Reset "${item.title}" to default artwork.`);
+    onShowToast(`${t.toast.resetArtwork} "${item.title}".`);
   };
 
   return (
@@ -80,120 +87,170 @@ export default function WorkModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-4xl bg-[#111111] border border-[#262626] rounded-[4px] shadow-2xl overflow-hidden my-auto animate-in fade-in duration-150"
+        className="relative w-full max-w-5xl bg-[#111111] border border-[#262626] rounded-[4px] shadow-2xl overflow-hidden my-auto animate-in fade-in duration-150"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#222222] bg-[#0E0E0E]">
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px] font-bold text-[#F2F2F2] bg-[#1a1a1a] border border-[#2a2a2a] px-2 py-0.5 rounded-[2px] tracking-[0.18em]">
-              {item.num}
-            </span>
-            <div>
-              <span className="font-mono text-[10px] text-[#8A8A8A] tracking-[0.18em] uppercase block">
-                {item.tag} // {item.category}
-              </span>
-              <h3 className="font-heading text-lg sm:text-xl font-bold text-[#F2F2F2] uppercase tracking-[-0.04em]">
-                {item.title}
-              </h3>
+        {/* Responsive Layout: Desktop 2 columns (Artwork Left, Details Right) */}
+        <div className="flex flex-col lg:flex-row min-h-[500px]">
+          {/* Left Column: Artwork Image */}
+          <div className="relative flex-1 lg:w-[58%] bg-[#0A0A0A] p-4 sm:p-6 lg:p-8 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-[#222222] min-h-[320px] sm:min-h-[440px] lg:min-h-[620px]">
+            <div className="w-full h-full flex items-center justify-center">
+              <WorkVisualRenderer item={item} customMediaUrl={customMediaUrl} isModal={true} />
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 text-[#8A8A8A] hover:text-[#F2F2F2] hover:bg-[#1a1a1a] rounded-[2px] transition-colors cursor-pointer"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Modal Body: Large Visual */}
-        <div className="p-6">
-          <div className="max-h-[65vh] overflow-hidden rounded-[2px] border border-[#222222] bg-[#0A0A0A] flex items-center justify-center">
-            <WorkVisualRenderer item={item} customMediaUrl={customMediaUrl} isModal={true} />
-          </div>
-
-          {/* Description & Metadata */}
-          <div className="mt-5 space-y-4">
-            <p className="font-body text-[#A1A1A1] text-sm leading-[1.7] max-w-2xl">
-              {item.description}
-            </p>
-
-            {/* Replace Controls Bar */}
-            <div className="p-4 rounded-[3px] bg-[#0E0E0E] border border-[#222222] mt-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div>
-                  <h4 className="font-mono text-xs font-bold text-[#F2F2F2] tracking-[0.12em] uppercase">
-                    REPLACE ARTWORK IMAGE
-                  </h4>
-                  <p className="font-mono text-[11px] text-[#666] tracking-[0.06em] mt-0.5">
-                    Upload an image file or paste an image link to update this card.
-                  </p>
+          {/* Right Column: Title, tag, description, OPEN FULL SIZE button, replacement controls */}
+          <div className="lg:w-[42%] bg-[#111111] p-6 sm:p-8 flex flex-col justify-between">
+            <div>
+              {/* Header: Tags & Close button */}
+              <div className="flex items-center justify-between gap-3 pb-4 border-b border-[#222222]">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-mono text-[11px] font-bold text-[#F2F2F2] bg-[#1a1a1a] border border-[#2a2a2a] px-2 py-0.5 rounded-[2px] tracking-[0.18em]">
+                    {item.num}
+                  </span>
+                  <span className="font-mono text-[10px] text-[#8A8A8A] tracking-[0.18em] uppercase">
+                    {item.tag} // {item.category}
+                  </span>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto font-mono text-xs">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleFileUpload}
-                  />
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="p-1.5 text-[#8A8A8A] hover:text-[#F2F2F2] hover:bg-[#1a1a1a] rounded-[2px] transition-colors cursor-pointer"
+                  aria-label={t.modal.close}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 font-bold tracking-[0.12em] uppercase bg-[#F2F2F2] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F2F2F2] border border-[#F2F2F2] rounded-[2px] transition-all cursor-pointer"
-                  >
-                    <Upload className="w-3.5 h-3.5" />
-                    UPLOAD FILE
-                  </button>
+              {/* Title in bold uppercase Space Grotesk */}
+              <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#F2F2F2] uppercase tracking-[-0.04em] leading-[0.95] mt-5 mb-4">
+                {item.title}
+              </h3>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsUrlMode(!isUrlMode)}
-                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 font-semibold tracking-[0.12em] uppercase bg-[#181818] hover:bg-[#222222] text-[#8A8A8A] hover:text-[#F2F2F2] border border-[#262626] rounded-[2px] transition-all cursor-pointer"
-                  >
-                    <LinkIcon className="w-3.5 h-3.5" />
-                    {isUrlMode ? 'CANCEL' : 'PASTE URL'}
-                  </button>
+              {/* Small "OPEN FULL SIZE ↗" mono button */}
+              <div className="mb-6">
+                <a
+                  href={mediaSrc}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-[0.14em] uppercase text-[#F2F2F2] hover:text-[#0A0A0A] bg-[#181818] hover:bg-[#F2F2F2] border border-[#2a2a2a] hover:border-[#F2F2F2] px-3.5 py-2 rounded-[2px] transition-all duration-150 cursor-pointer group"
+                >
+                  <span>{t.modal.openFullSize}</span>
+                  <span className="text-xs transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                </a>
+              </div>
+
+              {/* Description */}
+              <div className="space-y-2 mb-6">
+                <span className="font-mono text-[10px] text-[#666666] tracking-[0.18em] uppercase block">
+                  {t.modal.projectBrief}
+                </span>
+                <p className="font-body text-[#A1A1A1] text-sm leading-[1.7]">
+                  {item.description}
+                </p>
+              </div>
+
+              {/* Metadata specs */}
+              <div className="grid grid-cols-2 gap-3 p-3.5 bg-[#0D0D0D] border border-[#1F1F1F] rounded-[2px] mb-6 font-mono text-[11px]">
+                <div>
+                  <span className="text-[#666] block tracking-[0.14em] text-[10px] uppercase">
+                    {isVideo ? t.modal.format : t.modal.aspectRatio}
+                  </span>
+                  <span className="text-[#F2F2F2] font-semibold tracking-wider">
+                    {isVideo ? 'MP4 VIDEO' : 'ORIGINAL'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[#666] block tracking-[0.14em] text-[10px] uppercase">
+                    {t.modal.status}
+                  </span>
+                  <span className="text-[#22C55E] font-semibold tracking-wider flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] inline-block animate-pulse"></span>
+                    {t.modal.active}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom: Replace Artwork / Video Section */}
+            <div className="pt-4 border-t border-[#1F1F1F]">
+              <div className="p-3.5 rounded-[2px] bg-[#0E0E0E] border border-[#222222]">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-mono text-[10px] font-bold tracking-[0.16em] uppercase text-[#8A8A8A] flex items-center gap-1.5">
+                    <Upload className="w-3.5 h-3.5 text-[#22C55E]" />
+                    <span>{isVideo ? t.modal.replaceVideo : t.modal.replaceArtwork}</span>
+                  </span>
 
                   {customMediaUrl && (
                     <button
                       type="button"
                       onClick={handleResetMedia}
-                      className="inline-flex items-center justify-center gap-1.5 px-3 py-2 font-semibold tracking-[0.12em] uppercase bg-transparent hover:bg-[#1f1414] text-[#888] hover:text-[#F2F2F2] border border-[#332222] rounded-[2px] transition-all cursor-pointer"
-                      title="Reset back to default artwork"
+                      className="font-mono text-[10px] text-[#8A8A8A] hover:text-[#EF4444] flex items-center gap-1 transition-colors cursor-pointer"
+                      title={isVideo ? t.modal.resetOriginalVideo : t.modal.resetOriginal}
                     >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      RESET
+                      <RotateCcw className="w-3 h-3" />
+                      <span>RESET</span>
                     </button>
                   )}
                 </div>
-              </div>
 
-              {/* Paste URL Input Drawer */}
-              {isUrlMode && (
-                <form onSubmit={handleApplyUrl} className="mt-3 flex gap-2 font-mono text-xs">
-                  <input
-                    type="url"
-                    value={urlInput}
-                    onChange={(e) => setUrlInput(e.target.value)}
-                    placeholder="https://example.com/poster.png"
-                    className="flex-1 px-3 py-2 bg-[#0A0A0A] border border-[#333333] rounded-[2px] text-[#F2F2F2] placeholder-[#555] focus:outline-none focus:border-[#F2F2F2]"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 font-bold uppercase tracking-wider bg-[#F2F2F2] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F2F2F2] border border-[#F2F2F2] rounded-[2px] transition-colors cursor-pointer"
-                  >
-                    APPLY
-                  </button>
-                </form>
-              )}
+                {!isUrlMode ? (
+                  <div className="space-y-2">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      accept={isVideo ? 'video/mp4,video/*' : 'image/*'}
+                      className="hidden"
+                      aria-label="Upload artwork or video file"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full font-mono text-[11px] font-bold tracking-[0.12em] uppercase bg-[#181818] hover:bg-[#F2F2F2] text-[#F2F2F2] hover:text-[#0A0A0A] border border-[#2A2A2A] hover:border-[#F2F2F2] py-2.5 px-3 rounded-[2px] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>{isVideo ? t.modal.replaceVideo : t.modal.replaceArtwork}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsUrlMode(true)}
+                      className="w-full font-mono text-[10px] text-[#666] hover:text-[#A1A1A1] transition-colors py-1 flex items-center justify-center gap-1.5 cursor-pointer uppercase tracking-wider"
+                    >
+                      <LinkIcon className="w-3 h-3" />
+                      <span>{t.modal.pastePrompt}</span>
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplyUrl} className="space-y-2">
+                    <input
+                      type="url"
+                      value={urlInput}
+                      onChange={(e) => setUrlInput(e.target.value)}
+                      placeholder={t.modal.urlPlaceholder}
+                      className="w-full bg-[#141414] border border-[#2A2A2A] text-xs font-mono text-[#F2F2F2] px-3 py-2 rounded-[2px] focus:outline-none focus:border-[#F2F2F2]"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        className="flex-1 font-mono text-[11px] font-bold bg-[#F2F2F2] text-[#0A0A0A] py-1.5 rounded-[2px] transition-colors cursor-pointer"
+                      >
+                        {t.modal.applyUrl}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsUrlMode(false)}
+                        className="font-mono text-[11px] text-[#8A8A8A] hover:text-[#F2F2F2] px-3 py-1.5 border border-[#2A2A2A] rounded-[2px] cursor-pointer"
+                      >
+                        CANCEL
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
         </div>

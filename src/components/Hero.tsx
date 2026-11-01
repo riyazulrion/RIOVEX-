@@ -1,7 +1,9 @@
 import React from 'react';
-import { HERO_DATA } from '../data/portfolioData.ts';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export default function Hero() {
+  const { t } = useLanguage();
+
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -15,64 +17,58 @@ export default function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
         {/* Left Column (7 cols) */}
         <div className="lg:col-span-7 flex flex-col justify-start">
-          {/* Thin 1px line (40px wide) + green dot + mono label [ RIYAZUL HASAN RION // RIOVEX ] */}
+          {/* Thin 1px line + green dot + mono label */}
           <div className="flex items-center gap-3 mb-4">
             <span className="w-[40px] h-[1px] bg-[#333333] shrink-0" aria-hidden="true" />
             <span className="w-2 h-2 rounded-full bg-[#22C55E] shrink-0" aria-hidden="true" />
             <span className="font-mono text-[11px] text-[#8A8A8A] tracking-[0.18em] uppercase">
-              {HERO_DATA.label}
+              {t.hero.label}
             </span>
           </div>
 
-          {/* Small gray line "GRAPHIC DESIGNER • BANGLADESH" */}
+          {/* Small gray line */}
           <p className="font-mono text-[11px] text-[#8A8A8A] tracking-[0.18em] uppercase mb-6">
-            {HERO_DATA.role}
+            {t.hero.role}
           </p>
 
-          {/* HUGE Heading: RIYAZUL HASAN in Space Grotesk + rion in Instrument Serif italic */}
+          {/* HUGE Heading: RIYAZUL HASAN in solid + RION in outline */}
           <h1
             className="font-heading font-bold uppercase leading-[0.88] tracking-[-0.04em] text-[#F2F2F2]"
             style={{ fontSize: 'clamp(3.5rem, 11vw, 10rem)' }}
           >
             <span className="line-mask-wrapper">
               <span className="line-slide-up" style={{ animationDelay: '0.05s' }}>
-                RIYAZUL
+                {t.hero.firstName}
               </span>
-            </span>
+            </span>{' '}
             <span className="line-mask-wrapper">
               <span className="line-slide-up" style={{ animationDelay: '0.15s' }}>
-                HASAN
+                {t.hero.middleName}
               </span>
-            </span>
+            </span>{' '}
             <span className="line-mask-wrapper">
               <span
-                className="line-slide-up font-accent lowercase italic font-normal text-[#F2F2F2] tracking-normal"
-                style={{ animationDelay: '0.25s', fontSize: '1.05em' }}
+                className="line-slide-up text-[#8A8A8A]"
+                style={{ animationDelay: '0.25s' }}
               >
-                rion
+                {t.hero.lastName}
               </span>
             </span>
           </h1>
 
-          {/* Tagline in Instrument Serif italic with "stop the scroll." accented in off-white */}
-          <p
-            className="mt-8 font-accent italic text-[#A1A1A1] leading-[1.3] max-w-xl paragraph-fade-in"
-            style={{ fontSize: 'clamp(1.4rem, 2.6vw, 2.2rem)' }}
-          >
-            I design bold posters and ads that{' '}
-            <span className="text-[#F2F2F2] not-italic font-accent italic font-normal">
-              stop the scroll.
-            </span>
+          {/* Tagline */}
+          <p className="mt-8 font-body font-normal text-[#A1A1A1] text-[20px] leading-[1.4] max-w-xl paragraph-fade-in">
+            {t.hero.tagline}
           </p>
 
-          {/* Buttons: "VIEW SELECTED WORK →" (filled) and "INSTAGRAM" (outlined) */}
+          {/* Buttons: "VIEW SELECTED WORK →" and "INSTAGRAM" */}
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <button
               type="button"
               onClick={() => scrollToSection('work')}
               className="font-mono text-xs font-bold tracking-[0.12em] uppercase bg-[#F2F2F2] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F2F2F2] border border-[#F2F2F2] px-6 py-4 rounded-[2px] transition-all duration-150 inline-flex items-center gap-2 cursor-pointer"
             >
-              <span>VIEW MY DESIGNS</span>
+              <span>{t.hero.viewWork}</span>
               <span>→</span>
             </button>
 
@@ -82,23 +78,23 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="font-mono text-xs font-bold tracking-[0.12em] uppercase bg-transparent text-[#F2F2F2] hover:bg-[#F2F2F2] hover:text-[#0A0A0A] border border-[#333333] hover:border-[#F2F2F2] px-6 py-4 rounded-[2px] transition-all duration-150 inline-flex items-center gap-2"
             >
-              <span>INSTAGRAM</span>
+              <span>{t.hero.instagram}</span>
               <span>↗</span>
             </a>
           </div>
         </div>
 
-        {/* Right Column (5 cols): Bordered Card "RIOVEX STUDIO // [ ACTIVE ]" */}
+        {/* Right Column (5 cols): Studio Card */}
         <div className="lg:col-span-5 flex flex-col justify-start">
           <div className="studio-card p-6 sm:p-7 rounded-[4px] border border-[#222222] bg-[#111111]">
             {/* Card Header */}
             <div className="flex items-center justify-between pb-5 border-b border-[#222222]">
               <span className="font-mono text-[11px] font-bold tracking-[0.18em] text-[#F2F2F2] uppercase">
-                RIOVEX STUDIO // [ ACTIVE ]
+                {t.hero.studioCard}
               </span>
               <span className="flex items-center gap-1.5 font-mono text-[10px] text-[#22C55E] uppercase tracking-[0.18em]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" />
-                ONLINE
+                {t.hero.online}
               </span>
             </div>
 
@@ -113,7 +109,6 @@ export default function Hero() {
                 <line x1="160" y1="0" x2="160" y2="85" strokeWidth="1" stroke="#333" />
                 <line x1="215" y1="0" x2="215" y2="85" strokeWidth="1" />
                 <line x1="280" y1="0" x2="280" y2="85" strokeWidth="1" strokeDasharray="3 3" />
-                {/* Diagonal editorial accent */}
                 <path d="M 40 65 L 105 42 L 160 65 L 215 20 L 280 42" stroke="#F2F2F2" strokeWidth="1.5" />
                 <rect x="102" y="39" width="6" height="6" fill="#F2F2F2" />
                 <rect x="212" y="17" width="6" height="6" fill="#22C55E" />
@@ -122,13 +117,12 @@ export default function Hero() {
 
             {/* Below: Two Small Mono Columns "WHAT I DESIGN" and "TOOLS" */}
             <div className="grid grid-cols-2 gap-6 pt-2">
-              {/* Column 1: WHAT I DESIGN */}
               <div>
                 <span className="font-mono text-[10px] font-bold text-[#F2F2F2] tracking-[0.18em] uppercase block mb-3 pb-1 border-b border-[#222222]">
-                  WHAT I DESIGN
+                  {t.hero.whatIDesignTitle}
                 </span>
                 <ul className="space-y-2 font-mono text-[11px] text-[#8A8A8A]">
-                  {HERO_DATA.whatIDesign.map((item) => (
+                  {t.hero.whatIDesign.map((item) => (
                     <li key={item} className="hover:text-[#F2F2F2] transition-colors">
                       • {item}
                     </li>
@@ -136,13 +130,12 @@ export default function Hero() {
                 </ul>
               </div>
 
-              {/* Column 2: TOOLS */}
               <div>
                 <span className="font-mono text-[10px] font-bold text-[#F2F2F2] tracking-[0.18em] uppercase block mb-3 pb-1 border-b border-[#222222]">
-                  TOOLS
+                  {t.hero.toolsTitle}
                 </span>
                 <ul className="space-y-2 font-mono text-[11px] text-[#8A8A8A]">
-                  {HERO_DATA.tools.map((tool, idx) => (
+                  {t.hero.tools.map((tool, idx) => (
                     <li key={tool} className="hover:text-[#F2F2F2] transition-colors">
                       <span className="text-[#555] mr-1.5">0{idx + 1}</span>
                       {tool}
@@ -158,15 +151,15 @@ export default function Hero() {
       {/* Bottom Mono Strip */}
       <div className="mt-16 pt-5 pb-5 border-t border-b border-[#222222] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 font-mono text-[11px] text-[#8A8A8A] tracking-[0.18em] uppercase">
         <div className="flex items-center gap-2">
-          <span>STATUS</span>
-          <span className="text-[#22C55E] font-semibold">[ AVAILABLE FOR PROJECTS ]</span>
+          <span>{t.hero.statusLabel}</span>
+          <span className="text-[#22C55E] font-semibold">{t.hero.statusVal}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span>LOCATION</span>
-          <span className="text-[#F2F2F2]">BANGLADESH // REMOTE WORLDWIDE</span>
+          <span>{t.hero.locationLabel}</span>
+          <span className="text-[#F2F2F2]">{t.hero.locationVal}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span>CONTACT</span>
+          <span>{t.hero.contactLabel}</span>
           <a
             href="mailto:riovex818@gmail.com"
             className="text-[#F2F2F2] hover:underline"

@@ -8,8 +8,10 @@ export interface WorkItem {
   tag: string;
   description: string;
   defaultImage: string;
+  posterImage?: string;
   customMediaUrl?: string;
   aspectRatio?: string;
+  skills: string[];
 }
 
 export interface SkillRow {

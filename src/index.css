@@ -3,7 +3,6 @@
 @layer base {
   :root {
     --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-    --font-accent: 'Instrument Serif', 'Playfair Display', Georgia, serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   }
@@ -31,11 +30,6 @@
     text-transform: uppercase;
   }
 
-  .font-accent {
-    font-family: var(--font-accent);
-    font-style: italic;
-    letter-spacing: 0em;
-  }
 
   .font-mono, pre, code, .tag-mono {
     font-family: var(--font-mono);
@@ -95,6 +89,8 @@
   border: 1px solid #222222;
   border-radius: 4px;
 }
+
+
 
 /* Minimal clean scrollbar */
 ::-webkit-scrollbar {

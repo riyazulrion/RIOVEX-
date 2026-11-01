@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import ScrollProgressBar from './components/ScrollProgressBar.tsx';
 import Navbar from './components/Navbar.tsx';
 import Hero from './components/Hero.tsx';
 import About from './components/About.tsx';
@@ -12,10 +13,13 @@ import Work from './components/Work.tsx';
 import Contact from './components/Contact.tsx';
 import Footer from './components/Footer.tsx';
 import Toast from './components/Toast.tsx';
+import { LanguageProvider } from './context/LanguageContext.tsx';
+import type { SkillRow } from './types/portfolio.ts';
 
-export default function App() {
+function PortfolioApp() {
   const [activeSection, setActiveSection] = useState('home');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [activeSkillFilter, setActiveSkillFilter] = useState<SkillRow | null>(null);
 
   // IntersectionObserver to sync navbar active indicators as user scrolls
   useEffect(() => {
@@ -40,22 +44,39 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSelectSkill = (skill: SkillRow) => {
+    setActiveSkillFilter(skill);
+    const el = document.getElementById('work');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
   };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#F2F2F2] flex flex-col font-sans selection:bg-[#F2F2F2] selection:text-[#0A0A0A] relative overflow-x-hidden">
+      {/* Scroll Progress Bar */}
+      <ScrollProgressBar />
+
       {/* Top Navbar */}
       <Navbar activeSection={activeSection} />
-
 
       {/* Main Single Page Content */}
       <main className="flex-1">
         <Hero />
         <About />
-        <Skills />
-        <Work onShowToast={showToast} />
+        <Skills
+          onSelectSkill={handleSelectSkill}
+          activeSkillNum={activeSkillFilter?.num}
+        />
+        <Work
+          onShowToast={showToast}
+          activeSkillFilter={activeSkillFilter}
+          onClearSkillFilter={() => setActiveSkillFilter(null)}
+        />
         <Contact onShowToast={showToast} />
       </main>
 
@@ -68,3 +89,10 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <LanguageProvider>
+      <PortfolioApp />
+    </LanguageProvider>
+  );
+}

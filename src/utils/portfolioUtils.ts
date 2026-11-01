@@ -1,36 +1,4 @@
 /**
- * Formats a phone number for display or API use
- */
-export function formatBangladeshPhone(phone: string): string {
-  const cleaned = phone.replace(/\D/g, '');
-  if (cleaned.startsWith('880')) {
-    return `+880 ${cleaned.slice(3, 7)}-${cleaned.slice(7)}`;
-  }
-  if (cleaned.startsWith('0')) {
-    return `+880 ${cleaned.slice(1, 5)}-${cleaned.slice(5)}`;
-  }
-  return phone;
-}
-
-/**
- * Builds standard WhatsApp direct chat link
- */
-export function buildWhatsAppLink(phone: string, text?: string): string {
-  const cleaned = phone.replace(/\D/g, '');
-  const internationalNumber = cleaned.startsWith('880')
-    ? cleaned
-    : cleaned.startsWith('0')
-    ? `88${cleaned}`
-    : `880${cleaned}`;
-
-  const base = `https://wa.me/${internationalNumber}`;
-  if (text) {
-    return `${base}?text=${encodeURIComponent(text)}`;
-  }
-  return base;
-}
-
-/**
  * Key for saving work media in localStorage
  */
 export function getStorageKey(workId: string): string {
@@ -120,4 +88,63 @@ export function isValidMediaType(filename: string, expectedType: 'image' | 'vide
   }
   return videoExts.includes(ext) || imageExts.includes(ext);
 }
+
+export type WorkFilter = 'ALL' | 'POSTERS' | 'ADS' | 'LOGOS' | 'VIDEOS';
+
+/**
+ * Maps a work item tag to its filter category:
+ * - AI VIDEO -> VIDEOS
+ * - LOGO DESIGN and BRAND IDENTITY -> LOGOS
+ * - FOOD AD and PRODUCT AD -> ADS
+ * - All other tags -> POSTERS
+ */
+export function getWorkCategoryGroup(tag: string): 'POSTERS' | 'ADS' | 'LOGOS' | 'VIDEOS' {
+  const normalized = tag.replace(/\[|\]/g, '').trim().toUpperCase();
+  if (normalized === 'AI VIDEO' || normalized === 'VIDEO' || normalized.includes('VIDEO')) {
+    return 'VIDEOS';
+  }
+  if (normalized === 'LOGO DESIGN' || normalized === 'BRAND IDENTITY') {
+    return 'LOGOS';
+  }
+  if (normalized === 'FOOD AD' || normalized === 'PRODUCT AD') {
+    return 'ADS';
+  }
+  return 'POSTERS';
+}
+
+export function filterWorkItems<T extends { tag: string }>(items: T[], filter: WorkFilter): T[] {
+  if (filter === 'ALL') return items;
+  return items.filter((item) => getWorkCategoryGroup(item.tag) === filter);
+}
+
+/**
+ * Maps a skill number (e.g. '01', '02', '03'...) to its corresponding category filter in the filter bar,
+ * or null if there is no direct 1-to-1 match.
+ */
+export function getMatchingCategoryFilterForSkill(skillNum: string): WorkFilter | null {
+  switch (skillNum) {
+    case '01':
+      return 'POSTERS';
+    case '02':
+      return 'ADS';
+    case '03':
+      return 'LOGOS';
+    case '06':
+      return 'VIDEOS';
+    default:
+      return null;
+  }
+}
+
+/**
+ * Filters work items by a selected skill number (e.g. '01', '02', '03'...).
+ */
+export function filterWorkItemsBySkill<T extends { skills: string[] }>(
+  items: T[],
+  skillNum: string
+): T[] {
+  return items.filter((item) => Array.isArray(item.skills) && item.skills.includes(skillNum));
+}
+
+
 

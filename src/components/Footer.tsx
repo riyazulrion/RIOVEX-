@@ -1,7 +1,10 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -12,10 +15,10 @@ export default function Footer() {
         {/* Left: © 2026 RIYAZUL HASAN RION // RIOVEX */}
         <div className="text-center sm:text-left text-[#8A8A8A]">
           <span className="text-[#F2F2F2] font-semibold">
-            © 2026 RIYAZUL HASAN RION // RIOVEX
+            {t.footer.copyright}
           </span>
           <span className="block text-[10px] text-[#555] mt-1 uppercase">
-            BANGLADESH • GRAPHIC DESIGN &amp; AI ANIMATION
+            {t.footer.tagline}
           </span>
         </div>
 
@@ -25,7 +28,7 @@ export default function Footer() {
             href="mailto:riovex818@gmail.com"
             className="hover:text-[#F2F2F2] transition-colors"
           >
-            EMAIL
+            {t.footer.email}
           </a>
 
           <a
@@ -34,7 +37,16 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="hover:text-[#F2F2F2] transition-colors"
           >
-            INSTAGRAM (@RIOVE_X)
+            {t.footer.instagram}
+          </a>
+
+          <a
+            href="https://www.youtube.com/@riovex"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#F2F2F2] transition-colors"
+          >
+            {t.footer.youtube}
           </a>
 
           <a
@@ -43,15 +55,15 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="hover:text-[#F2F2F2] transition-colors"
           >
-            LEO&apos;S JOURNEY
+            {t.footer.leosJourney}
           </a>
 
           <button
             type="button"
             onClick={scrollToTop}
             className="p-2 border border-[#222222] hover:border-[#444] text-[#8A8A8A] hover:text-[#F2F2F2] bg-[#111111] rounded-[2px] transition-colors ml-2 cursor-pointer"
-            aria-label="Back to top"
-            title="Back to top"
+            aria-label={t.footer.backToTop}
+            title={t.footer.backToTop}
           >
             <ArrowUp className="w-3.5 h-3.5" />
           </button>

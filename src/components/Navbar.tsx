@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface Props {
   activeSection: string;
@@ -8,6 +9,7 @@ interface Props {
 export default function Navbar({ activeSection }: Props) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,11 +20,11 @@ export default function Navbar({ activeSection }: Props) {
   }, []);
 
   const navLinks = [
-    { label: 'HOME', href: '#home', id: 'home' },
-    { label: 'ABOUT', href: '#about', id: 'about' },
-    { label: 'WORK', href: '#work', id: 'work' },
-    { label: 'SKILLS', href: '#skills', id: 'skills' },
-    { label: 'CONTACT', href: '#contact', id: 'contact' },
+    { label: t.navbar.home, href: '#home', id: 'home' },
+    { label: t.navbar.about, href: '#about', id: 'about' },
+    { label: t.navbar.work, href: '#work', id: 'work' },
+    { label: t.navbar.skills, href: '#skills', id: 'skills' },
+    { label: t.navbar.contact, href: '#contact', id: 'contact' },
   ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -57,13 +59,13 @@ export default function Navbar({ activeSection }: Props) {
           </span>
         </a>
 
-        {/* Center: Monospace minimal links (11px, 0.18em tracking) */}
+        {/* Center: Monospace minimal links */}
         <nav className="hidden md:flex items-center gap-8 font-mono text-[11px] tracking-[0.18em] uppercase">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
               <a
-                key={link.label}
+                key={link.id}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`transition-colors py-1 relative ${
@@ -81,40 +83,116 @@ export default function Navbar({ activeSection }: Props) {
           })}
         </nav>
 
-        {/* Right: Solid off-white button (12px, 0.12em tracking) */}
+        {/* Right: Language Switcher + Solid off-white button */}
         <div className="hidden md:flex items-center gap-4">
+          {/* Language Switcher */}
+          <div
+            className="flex items-center font-mono text-[11px] tracking-[0.12em] border border-[#2a2a2a] rounded-[2px] bg-[#111111] p-0.5"
+            role="group"
+            aria-label="Language selector"
+          >
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2.5 py-1 rounded-[2px] transition-all font-bold cursor-pointer ${
+                language === 'en'
+                  ? 'bg-[#F2F2F2] text-[#0A0A0A]'
+                  : 'text-[#8A8A8A] hover:text-[#F2F2F2]'
+              }`}
+              aria-label="Switch to English"
+              aria-pressed={language === 'en'}
+            >
+              EN
+            </button>
+            <span className="text-[#333333] select-none px-0.5">/</span>
+            <button
+              type="button"
+              onClick={() => setLanguage('bn')}
+              className={`px-2.5 py-1 rounded-[2px] transition-all font-bold cursor-pointer ${
+                language === 'bn'
+                  ? 'bg-[#F2F2F2] text-[#0A0A0A]'
+                  : 'text-[#8A8A8A] hover:text-[#F2F2F2]'
+              }`}
+              aria-label="Switch to Bengali"
+              aria-pressed={language === 'bn'}
+            >
+              বাংলা
+            </button>
+          </div>
+
           <a
             href="#contact"
             onClick={(e) => handleLinkClick(e, '#contact')}
             className="font-mono text-xs font-bold tracking-[0.12em] uppercase bg-[#F2F2F2] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F2F2F2] border border-[#F2F2F2] px-4 py-2.5 rounded-[2px] transition-all duration-150 inline-flex items-center gap-1.5"
           >
-            <span>CONTACT ME</span>
+            <span>{t.navbar.contactBtn}</span>
             <span>→</span>
           </a>
         </div>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-[#8A8A8A] hover:text-[#F2F2F2] border border-[#222222] bg-[#111111] rounded-[3px]"
-          aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile: Language Switcher + Hamburger Button */}
+        <div className="flex md:hidden items-center gap-2.5">
+          {/* Quick mobile language toggle */}
+          <div
+            className="flex items-center font-mono text-[10px] tracking-[0.1em] border border-[#2a2a2a] rounded-[2px] bg-[#111111] p-0.5"
+            role="group"
+            aria-label="Language selector"
+          >
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-1 rounded-[2px] transition-all font-bold cursor-pointer ${
+                language === 'en'
+                  ? 'bg-[#F2F2F2] text-[#0A0A0A]'
+                  : 'text-[#8A8A8A]'
+              }`}
+              aria-label="English"
+            >
+              EN
+            </button>
+            <span className="text-[#333333] select-none px-0.5">/</span>
+            <button
+              type="button"
+              onClick={() => setLanguage('bn')}
+              className={`px-2 py-1 rounded-[2px] transition-all font-bold cursor-pointer ${
+                language === 'bn'
+                  ? 'bg-[#F2F2F2] text-[#0A0A0A]'
+                  : 'text-[#8A8A8A]'
+              }`}
+              aria-label="বাংলা"
+            >
+              বাংলা
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 text-[#8A8A8A] hover:text-[#F2F2F2] border border-[#222222] bg-[#111111] rounded-[3px] cursor-pointer"
+            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#0A0A0A] border-b border-[#222222] px-4 py-5 space-y-3 animate-in fade-in duration-150">
-          <div className="font-mono text-[11px] text-[#8A8A8A] tracking-widest pb-1 border-b border-[#1c1c1c]">
-            // NAVIGATION
+          <div className="flex items-center justify-between pb-1 border-b border-[#1c1c1c]">
+            <span className="font-mono text-[11px] text-[#8A8A8A] tracking-widest">
+              {t.navbar.navigation}
+            </span>
+            <span className="font-mono text-[10px] text-[#22C55E]">
+              {language === 'en' ? 'ENGLISH' : 'বাংলা'}
+            </span>
           </div>
+
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
               <a
-                key={link.label}
+                key={link.id}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`block font-mono text-[11px] tracking-[0.18em] py-2 uppercase ${
@@ -125,13 +203,14 @@ export default function Navbar({ activeSection }: Props) {
               </a>
             );
           })}
+
           <div className="pt-2">
             <a
               href="#contact"
               onClick={(e) => handleLinkClick(e, '#contact')}
               className="w-full font-mono text-xs font-bold tracking-[0.12em] uppercase bg-[#F2F2F2] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F2F2F2] border border-[#F2F2F2] py-3 rounded-[2px] transition-all duration-150 flex items-center justify-center gap-2"
             >
-              <span>CONTACT ME →</span>
+              <span>{t.navbar.contactBtn} →</span>
             </a>
           </div>
         </div>
