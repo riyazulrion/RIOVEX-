@@ -9,7 +9,7 @@ test('CONTACT_DATA contains only email, instagram, and youtube without phone or 
   const { CONTACT_DATA } = await import('../data/portfolioData.ts');
   assert.ok(CONTACT_DATA.email);
   assert.ok(CONTACT_DATA.instagram.url);
-  assert.ok(CONTACT_DATA.youtube.url);
+  assert.equal(CONTACT_DATA.youtube.url, 'https://youtube.com/@riovex-818');
   assert.equal('phone' in CONTACT_DATA, false);
   assert.equal('whatsapp' in CONTACT_DATA, false);
 });
@@ -34,7 +34,7 @@ test('copyToClipboard safely returns false in non-window/SSR environment', async
 
 test('WORK_ITEMS contain valid default media paths with supported extensions', async () => {
   const { WORK_ITEMS } = await import('../data/portfolioData.ts');
-  assert.equal(WORK_ITEMS.length, 10);
+  assert.equal(WORK_ITEMS.length, 11);
   for (const item of WORK_ITEMS) {
     assert.ok(item.id && item.id.length > 0);
     assert.ok(item.title && item.title.length > 0);
@@ -48,8 +48,12 @@ test('WORK_ITEMS contain valid default media paths with supported extensions', a
   assert.equal(burgerCards.length, 1);
 
   // Ensure JUICE COMMERCIAL exists
-  const videoCards = WORK_ITEMS.filter((i) => i.title.toUpperCase().includes('JUICE COMMERCIAL'));
-  assert.equal(videoCards.length, 1);
+  const juiceCards = WORK_ITEMS.filter((i) => i.title.toUpperCase().includes('JUICE COMMERCIAL'));
+  assert.equal(juiceCards.length, 1);
+
+  // Ensure SHAMPOO COMMERCIAL exists
+  const shampooCards = WORK_ITEMS.filter((i) => i.title.toUpperCase().includes('SHAMPOO COMMERCIAL'));
+  assert.equal(shampooCards.length, 1);
 });
 
 test('SKILL_ROWS contains updated 6 disciplines in correct order', async () => {
@@ -85,7 +89,7 @@ test('filterWorkItems filters items correctly by category', async () => {
   const { WORK_ITEMS } = await import('../data/portfolioData.ts');
 
   const allItems = filterWorkItems(WORK_ITEMS, 'ALL');
-  assert.equal(allItems.length, 10);
+  assert.equal(allItems.length, 11);
 
   const posters = filterWorkItems(WORK_ITEMS, 'POSTERS');
   assert.equal(posters.length, 4); // Jordan 4, Cane Man, Street Grunge, Cricketer
@@ -97,8 +101,9 @@ test('filterWorkItems filters items correctly by category', async () => {
   assert.equal(logos.length, 3); // Rionira, The Detox, Stratum
 
   const videos = filterWorkItems(WORK_ITEMS, 'VIDEOS');
-  assert.equal(videos.length, 1); // Juice Commercial
-  assert.equal(videos[0].title, 'JUICE COMMERCIAL');
+  assert.equal(videos.length, 2); // Juice Commercial, Shampoo Commercial
+  const videoTitles = videos.map((v) => v.title).sort();
+  assert.deepEqual(videoTitles, ['JUICE COMMERCIAL', 'SHAMPOO COMMERCIAL']);
 });
 
 test('getMatchingCategoryFilterForSkill maps direct matching skills and returns null for multi/non-matching skills', async () => {
@@ -153,10 +158,11 @@ test('filterWorkItemsBySkill correctly filters items according to the requested 
   const productDesignIds = productDesignItems.map((i) => i.id).sort();
   assert.deepEqual(productDesignIds, ['burger-offer', 'fresh-sprite', 'jordan-4-sneaker-ad']);
 
-  // 06 AI VIDEO CREATION → 1 item (Juice commercial)
+  // 06 AI VIDEO CREATION → 2 items (Juice commercial, Shampoo commercial)
   const videoSkillItems = filterWorkItemsBySkill(WORK_ITEMS, '06');
-  assert.equal(videoSkillItems.length, 1);
-  assert.equal(videoSkillItems[0].id, 'juice-commercial');
+  assert.equal(videoSkillItems.length, 2);
+  const videoSkillIds = videoSkillItems.map((i) => i.id).sort();
+  assert.deepEqual(videoSkillIds, ['juice-commercial', 'shampoo-commercial']);
 });
 
 test('i18n TRANSLATIONS contains complete and populated dictionaries for en and bn', async () => {

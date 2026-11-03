@@ -45,7 +45,7 @@ export default function Navbar({ activeSection }: Props) {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Left: RIOVEX wordmark + [ 2026 ] */}
+        {/* Left: RIOVEX wordmark */}
         <a
           href="#home"
           onClick={(e) => handleLinkClick(e, '#home')}
@@ -53,9 +53,6 @@ export default function Navbar({ activeSection }: Props) {
         >
           <span className="font-heading font-bold text-xl tracking-[-0.04em] text-[#F2F2F2] group-hover:text-white transition-colors">
             RIOVEX
-          </span>
-          <span className="font-mono text-[11px] text-[#8A8A8A] tracking-[0.18em] uppercase border border-[#222222] px-1.5 py-0.5 rounded-[2px] bg-[#111111]">
-            [ 2026 ]
           </span>
         </a>
 

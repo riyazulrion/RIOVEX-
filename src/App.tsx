@@ -80,6 +80,28 @@ function PortfolioApp() {
         <Contact onShowToast={showToast} />
       </main>
 
+      {/* Centered Closing Section */}
+      <section className="border-t border-[#222222] py-20 px-4 sm:px-6 lg:px-8 text-center bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="font-heading font-bold text-2xl sm:text-4xl md:text-5xl text-[#F2F2F2] tracking-[-0.04em] uppercase leading-tight mb-4">
+            THANK YOU FOR VISITING RIOVEX.
+          </h2>
+          <p className="font-body text-[#A1A1A1] text-sm sm:text-base leading-relaxed mb-8 max-w-xl mx-auto">
+            Hope you liked the work. Let's create something great together.
+          </p>
+          <div>
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="font-mono text-xs font-bold tracking-[0.14em] uppercase bg-transparent hover:bg-[#F2F2F2] text-[#F2F2F2] hover:text-[#0A0A0A] border border-[#333333] hover:border-[#F2F2F2] px-6 py-3.5 rounded-[2px] transition-all duration-150 inline-flex items-center gap-2 cursor-pointer"
+            >
+              <span>BACK TO TOP</span>
+              <span>↑</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <Footer />
 

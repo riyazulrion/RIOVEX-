@@ -146,6 +146,17 @@ export const WORK_ITEMS: WorkItem[] = [
     posterImage: '/assets/aistudio/juice_commercial_poster.png',
     skills: ['02', '06'],
   },
+  {
+    id: 'shampoo-commercial',
+    num: '12',
+    title: 'SHAMPOO COMMERCIAL',
+    category: 'AI VIDEO',
+    tag: '[AI VIDEO]',
+    description: 'AI-generated shampoo commercial concept with smooth product shots and cinematic motion, made with AI video tools. Concept work, not an official brand ad.',
+    defaultImage: '/assets/aistudio/Garnier_shampoo_commercial_creation_3b405036_e64e41d8.mp4',
+    posterImage: '/assets/aistudio/shampoo_commercial_poster.png',
+    skills: ['06'],
+  },
 ];
 
 export const CONTACT_DATA = {
@@ -158,9 +169,9 @@ export const CONTACT_DATA = {
     label: 'FOLLOW →',
   },
   youtube: {
-    handle: '@riovex',
-    url: 'https://www.youtube.com/@riovex',
-    label: 'YOUTUBE ↗',
+    handle: '@riovex-818',
+    url: 'https://youtube.com/@riovex-818',
+    label: 'YOUTUBE: @riovex-818 ↗',
   },
   qrCodePath: '/assets/aistudio/riove_x_qr_74d76c59.png',
   qrCaption: '[ SCAN TO FOLLOW @RIOVE_X ]',

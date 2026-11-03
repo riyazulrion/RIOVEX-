@@ -69,6 +69,12 @@ export const WORK_ITEMS_I18N: Record<Language, Record<string, LocalizedWorkMeta>
       category: 'AI VIDEO',
       description: 'AI-generated beverage commercial with a juice splash, made with AI video tools.',
     },
+    'shampoo-commercial': {
+      title: 'SHAMPOO COMMERCIAL',
+      tag: '[AI VIDEO]',
+      category: 'AI VIDEO',
+      description: 'AI-generated shampoo commercial concept with smooth product shots and cinematic motion, made with AI video tools. Concept work, not an official brand ad.',
+    },
   },
   bn: {
     'jordan-4-sneaker-ad': {
@@ -131,6 +137,12 @@ export const WORK_ITEMS_I18N: Record<Language, Record<string, LocalizedWorkMeta>
       category: 'এআই ভিডিও',
       description: 'জুসের স্প্ল্যাশ সহ এআই টুলে তৈরি কৃত্রিম বুদ্ধিমত্তা চালিত পানীয়ের বিজ্ঞাপন।',
     },
+    'shampoo-commercial': {
+      title: 'শ্যাম্পু কমার্শিয়াল',
+      tag: '[এআই ভিডিও]',
+      category: 'এআই ভিডিও',
+      description: 'মসৃণ প্রোডাক্ট শট ও সিনেম্যাটিক মোশন সহ এআই টুলে তৈরি শ্যাম্পু বিজ্ঞাপনের কনসেপ্ট। কনসেপ্ট আর্ট, অফিশিয়াল ব্র্যান্ড বিজ্ঞাপন নয়।',
+    },
   },
 };
 
@@ -155,6 +167,7 @@ export const TRANSLATIONS = {
       tagline: 'I design bold posters and ads that stop the scroll.',
       viewWork: 'VIEW MY DESIGNS',
       instagram: 'INSTAGRAM',
+      youtube: 'YOUTUBE',
       studioCard: 'RIOVEX STUDIO // [ ACTIVE ]',
       online: 'ONLINE',
       whatIDesignTitle: 'WHAT I DESIGN',
@@ -273,7 +286,7 @@ export const TRANSLATIONS = {
       copyright: '© 2026 RIYAZUL HASAN RION // RIOVEX',
       tagline: 'BANGLADESH • GRAPHIC DESIGN & AI ANIMATION',
       email: 'EMAIL',
-      instagram: 'INSTAGRAM (@RIOVE_X)',
+      instagram: 'INSTAGRAM',
       youtube: 'YOUTUBE',
       leosJourney: "LEO'S JOURNEY",
       backToTop: 'Back to top',
@@ -305,6 +318,7 @@ export const TRANSLATIONS = {
       tagline: 'আমি তৈরি করি আকর্ষণীয় পোস্টার ও বিজ্ঞাপন যা এক পলকেই দৃষ্টি কাড়ে।',
       viewWork: 'আমার কাজ দেখুন',
       instagram: 'ইনস্টাগ্রাম',
+      youtube: 'ইউটিউব',
       studioCard: 'রিওভেক্স স্টুডিও // [ সক্রিয় ]',
       online: 'অনলাইন',
       whatIDesignTitle: 'যা আমি ডিজাইন করি',
@@ -423,7 +437,7 @@ export const TRANSLATIONS = {
       copyright: '© ২০২৬ রিয়াজুল হাসান রিওন // রিওভেক্স',
       tagline: 'বাংলাদেশ • গ্রাফিক ডিজাইন ও এআই অ্যানিমেশন',
       email: 'ইমেইল',
-      instagram: 'ইনস্টাগ্রাম (@RIOVE_X)',
+      instagram: 'ইনস্টাগ্রাম',
       youtube: 'ইউটিউব',
       leosJourney: 'লিও’স জার্নি',
       backToTop: 'শীর্ষে যান',

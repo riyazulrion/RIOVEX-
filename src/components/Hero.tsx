@@ -31,27 +31,19 @@ export default function Hero() {
             {t.hero.role}
           </p>
 
-          {/* HUGE Heading: RIYAZUL HASAN in solid + RION in outline */}
+          {/* Small mono label line above */}
+          <div className="font-mono text-[11px] text-[#8A8A8A] tracking-[0.2em] uppercase mb-3">
+            HELLO, THIS IS
+          </div>
+
+          {/* HUGE Heading: RIOVEX in bold uppercase Space Grotesk */}
           <h1
-            className="font-heading font-bold uppercase leading-[0.88] tracking-[-0.04em] text-[#F2F2F2]"
-            style={{ fontSize: 'clamp(3.5rem, 11vw, 10rem)' }}
+            className="font-heading font-bold uppercase leading-[0.88] tracking-[-0.04em] text-[#F2F2F2] whitespace-nowrap"
+            style={{ fontSize: 'clamp(4rem, 14vw, 13rem)' }}
           >
             <span className="line-mask-wrapper">
               <span className="line-slide-up" style={{ animationDelay: '0.05s' }}>
-                {t.hero.firstName}
-              </span>
-            </span>{' '}
-            <span className="line-mask-wrapper">
-              <span className="line-slide-up" style={{ animationDelay: '0.15s' }}>
-                {t.hero.middleName}
-              </span>
-            </span>{' '}
-            <span className="line-mask-wrapper">
-              <span
-                className="line-slide-up text-[#8A8A8A]"
-                style={{ animationDelay: '0.25s' }}
-              >
-                {t.hero.lastName}
+                RIOVEX
               </span>
             </span>
           </h1>
@@ -79,6 +71,16 @@ export default function Hero() {
               className="font-mono text-xs font-bold tracking-[0.12em] uppercase bg-transparent text-[#F2F2F2] hover:bg-[#F2F2F2] hover:text-[#0A0A0A] border border-[#333333] hover:border-[#F2F2F2] px-6 py-4 rounded-[2px] transition-all duration-150 inline-flex items-center gap-2"
             >
               <span>{t.hero.instagram}</span>
+              <span>↗</span>
+            </a>
+
+            <a
+              href="https://youtube.com/@riovex-818"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs font-bold tracking-[0.12em] uppercase bg-transparent text-[#F2F2F2] hover:bg-[#F2F2F2] hover:text-[#0A0A0A] border border-[#333333] hover:border-[#F2F2F2] px-6 py-4 rounded-[2px] transition-all duration-150 inline-flex items-center gap-2"
+            >
+              <span>{t.hero.youtube}</span>
               <span>↗</span>
             </a>
           </div>

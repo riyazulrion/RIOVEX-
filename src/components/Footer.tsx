@@ -22,7 +22,7 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Right Mono Links: Email, Instagram, Leo's Journey */}
+        {/* Right Mono Links: EMAIL, INSTAGRAM, YOUTUBE */}
         <div className="flex items-center gap-6 text-[#8A8A8A] tracking-[0.18em] uppercase text-[11px]">
           <a
             href="mailto:riovex818@gmail.com"
@@ -41,21 +41,12 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://www.youtube.com/@riovex"
+            href="https://youtube.com/@riovex-818"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-[#F2F2F2] transition-colors"
           >
             {t.footer.youtube}
-          </a>
-
-          <a
-            href="https://www.instagram.com/leos_journey_00"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#F2F2F2] transition-colors"
-          >
-            {t.footer.leosJourney}
           </a>
 
           <button

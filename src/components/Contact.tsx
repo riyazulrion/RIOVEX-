@@ -117,7 +117,7 @@ export default function Contact({ onShowToast }: Props) {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#222222] flex flex-wrap items-center justify-between gap-3">
+            <div className="pt-4 border-t border-[#222222] flex flex-wrap items-center gap-3">
               <a
                 href={CONTACT_DATA.instagram.url}
                 target="_blank"
@@ -127,17 +127,17 @@ export default function Contact({ onShowToast }: Props) {
                 <span>{t.contact.follow}</span>
                 <span>↗</span>
               </a>
+            </div>
 
-              {/* YouTube Small Link */}
+            {/* Small mono line under the Instagram row */}
+            <div className="mt-3 pt-3 border-t border-[#1a1a1a]">
               <a
                 href={CONTACT_DATA.youtube.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-[11px] font-semibold tracking-[0.14em] uppercase text-[#8A8A8A] hover:text-[#FF0000] border border-[#2a2a2a] hover:border-[#FF0000]/40 px-3.5 py-2.5 rounded-[2px] transition-all inline-flex items-center gap-1.5 cursor-pointer bg-[#0D0D0D]"
-                title="YouTube Channel"
+                className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#8A8A8A] hover:text-[#F2F2F2] transition-colors inline-flex items-center gap-1"
               >
-                <span>{t.contact.youtube}</span>
-                <span className="text-xs">↗</span>
+                <span>YOUTUBE: @riovex-818 ↗</span>
               </a>
             </div>
           </div>
